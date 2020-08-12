@@ -1,0 +1,220 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="booksModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="books">
+          <Key>
+            <PropertyRef Name="book_id" />
+          </Key>
+          <Property Name="book_id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="title" Type="nchar" MaxLength="10" Nullable="false" />
+          <Property Name="auther" Type="nchar" MaxLength="10" Nullable="false" />
+          <Property Name="subcatogory_id" Type="bigint" Nullable="false" />
+          <Property Name="created_at" Type="datetime2" Precision="7" Nullable="false" />
+        </EntityType>
+        <EntityType Name="catogories">
+          <Key>
+            <PropertyRef Name="catogory_id" />
+          </Key>
+          <Property Name="catogory_id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="nchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="sub_catrogoris">
+          <Key>
+            <PropertyRef Name="subCatogory_id" />
+          </Key>
+          <Property Name="subCatogory_id" Type="bigint" Nullable="false" />
+          <Property Name="name" Type="nchar" MaxLength="100" />
+          <Property Name="main_category" Type="bigint" />
+        </EntityType>
+        <Association Name="FK_books_sub_catrogoris">
+          <End Role="sub_catrogoris" Type="Self.sub_catrogoris" Multiplicity="1" />
+          <End Role="books" Type="Self.books" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="sub_catrogoris">
+              <PropertyRef Name="subCatogory_id" />
+            </Principal>
+            <Dependent Role="books">
+              <PropertyRef Name="subcatogory_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_sub_catrogoris_catogories">
+          <End Role="catogories" Type="Self.catogories" Multiplicity="1" />
+          <End Role="sub_catrogoris" Type="Self.sub_catrogoris" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="catogories">
+              <PropertyRef Name="catogory_id" />
+            </Principal>
+            <Dependent Role="sub_catrogoris">
+              <PropertyRef Name="subCatogory_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="subs" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="maincatogory" Type="int" Mode="In" />
+        </Function>
+        <EntityContainer Name="booksModelStoreContainer">
+          <EntitySet Name="books" EntityType="Self.books" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="catogories" EntityType="Self.catogories" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sub_catrogoris" EntityType="Self.sub_catrogoris" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_books_sub_catrogoris" Association="Self.FK_books_sub_catrogoris">
+            <End Role="sub_catrogoris" EntitySet="sub_catrogoris" />
+            <End Role="books" EntitySet="books" />
+          </AssociationSet>
+          <AssociationSet Name="FK_sub_catrogoris_catogories" Association="Self.FK_sub_catrogoris_catogories">
+            <End Role="catogories" EntitySet="catogories" />
+            <End Role="sub_catrogoris" EntitySet="sub_catrogoris" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="booksModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="book">
+          <Key>
+            <PropertyRef Name="book_id" />
+          </Key>
+          <Property Name="book_id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="title" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="auther" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="subcatogory_id" Type="Int64" Nullable="false" />
+          <Property Name="created_at" Type="DateTime" Nullable="false" Precision="7" />
+          <NavigationProperty Name="sub_catrogoris" Relationship="Self.FK_books_sub_catrogoris" FromRole="books" ToRole="sub_catrogoris" />
+        </EntityType>
+        <EntityType Name="catogory">
+          <Key>
+            <PropertyRef Name="catogory_id" />
+          </Key>
+          <Property Name="catogory_id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="100" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="sub_catrogoris" Relationship="Self.FK_sub_catrogoris_catogories" FromRole="catogories" ToRole="sub_catrogoris" />
+        </EntityType>
+        <EntityType Name="sub_catrogoris">
+          <Key>
+            <PropertyRef Name="subCatogory_id" />
+          </Key>
+          <Property Name="subCatogory_id" Type="Int64" Nullable="false" />
+          <Property Name="name" Type="String" MaxLength="100" FixedLength="true" Unicode="true" />
+          <Property Name="main_category" Type="Int64" />
+          <NavigationProperty Name="books" Relationship="Self.FK_books_sub_catrogoris" FromRole="sub_catrogoris" ToRole="books" />
+          <NavigationProperty Name="catogory" Relationship="Self.FK_sub_catrogoris_catogories" FromRole="sub_catrogoris" ToRole="catogories" />
+        </EntityType>
+        <Association Name="FK_books_sub_catrogoris">
+          <End Role="sub_catrogoris" Type="Self.sub_catrogoris" Multiplicity="1" />
+          <End Role="books" Type="Self.book" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="sub_catrogoris">
+              <PropertyRef Name="subCatogory_id" />
+            </Principal>
+            <Dependent Role="books">
+              <PropertyRef Name="subcatogory_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_sub_catrogoris_catogories">
+          <End Role="catogories" Type="Self.catogory" Multiplicity="1" />
+          <End Role="sub_catrogoris" Type="Self.sub_catrogoris" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="catogories">
+              <PropertyRef Name="catogory_id" />
+            </Principal>
+            <Dependent Role="sub_catrogoris">
+              <PropertyRef Name="subCatogory_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="booksEntities2" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="books" EntityType="Self.book" />
+          <EntitySet Name="catogories" EntityType="Self.catogory" />
+          <EntitySet Name="sub_catrogoris" EntityType="Self.sub_catrogoris" />
+          <AssociationSet Name="FK_books_sub_catrogoris" Association="Self.FK_books_sub_catrogoris">
+            <End Role="sub_catrogoris" EntitySet="sub_catrogoris" />
+            <End Role="books" EntitySet="books" />
+          </AssociationSet>
+          <AssociationSet Name="FK_sub_catrogoris_catogories" Association="Self.FK_sub_catrogoris_catogories">
+            <End Role="catogories" EntitySet="catogories" />
+            <End Role="sub_catrogoris" EntitySet="sub_catrogoris" />
+          </AssociationSet>
+          <FunctionImport Name="subs" ReturnType="Collection(booksModel.subs_Result)">
+            <Parameter Name="maincatogory" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="subssp" EntitySet="sub_catrogoris" ReturnType="Collection(booksModel.sub_catrogoris)">
+            <Parameter Name="maincatogory" Mode="In" Type="Int32" />
+          </FunctionImport>
+        </EntityContainer>
+        <ComplexType Name="subs_Result">
+          <Property Type="Int64" Name="subCatogory_id" Nullable="false" />
+          <Property Type="String" Name="name" Nullable="true" MaxLength="100" />
+        </ComplexType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="booksModelStoreContainer" CdmEntityContainer="booksEntities2">
+          <EntitySetMapping Name="books">
+            <EntityTypeMapping TypeName="booksModel.book">
+              <MappingFragment StoreEntitySet="books">
+                <ScalarProperty Name="book_id" ColumnName="book_id" />
+                <ScalarProperty Name="title" ColumnName="title" />
+                <ScalarProperty Name="auther" ColumnName="auther" />
+                <ScalarProperty Name="subcatogory_id" ColumnName="subcatogory_id" />
+                <ScalarProperty Name="created_at" ColumnName="created_at" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="catogories">
+            <EntityTypeMapping TypeName="booksModel.catogory">
+              <MappingFragment StoreEntitySet="catogories">
+                <ScalarProperty Name="catogory_id" ColumnName="catogory_id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sub_catrogoris">
+            <EntityTypeMapping TypeName="booksModel.sub_catrogoris">
+              <MappingFragment StoreEntitySet="sub_catrogoris">
+                <ScalarProperty Name="subCatogory_id" ColumnName="subCatogory_id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="main_category" ColumnName="main_category" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="subs" FunctionName="booksModel.Store.subs">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="booksModel.subs_Result">
+                <ScalarProperty Name="subCatogory_id" ColumnName="subCatogory_id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="subssp" FunctionName="booksModel.Store.subs" />
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
