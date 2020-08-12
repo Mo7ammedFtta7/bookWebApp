@@ -27,7 +27,7 @@ namespace BookingManager.Controllers
         }
     // GET: /GetsubCatrogorisByMain
 
-    public ActionResult GetsubCatrogorisByMain(int id)
+        public ActionResult GetsubCatrogorisByMain(int id)
         {
             var sub_catrogoris = db.subs(id);
             return Json(sub_catrogoris, JsonRequestBehavior.AllowGet); ;

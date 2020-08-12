@@ -22,6 +22,8 @@ namespace BookingManager.Controllers.api
             return db.catogories;
         }
 
+
+
         // GET: api/catogories/5
         [ResponseType(typeof(catogory))]
         public IHttpActionResult Getcatogory(long id)
