@@ -243,6 +243,7 @@
     <Content Include="Views\sub_catrogoris\Details.cshtml" />
     <Content Include="Views\sub_catrogoris\Edit.cshtml" />
     <Content Include="Views\sub_catrogoris\Index.cshtml" />
+    <Content Include="Views\books\stackoverflow.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
