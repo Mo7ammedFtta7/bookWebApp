@@ -142,7 +142,9 @@
     <Compile Include="Controllers\api\catogoriesController.cs" />
     <Compile Include="Controllers\api\sub_catrogorisController.cs" />
     <Compile Include="Controllers\booksController.cs" />
+    <Compile Include="Controllers\catogoriesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\subcatrogorisController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -244,6 +246,11 @@
     <Content Include="Views\sub_catrogoris\Edit.cshtml" />
     <Content Include="Views\sub_catrogoris\Index.cshtml" />
     <Content Include="Views\books\stackoverflow.cshtml" />
+    <Content Include="Views\subcatrogoris\Create.cshtml" />
+    <Content Include="Views\subcatrogoris\Delete.cshtml" />
+    <Content Include="Views\subcatrogoris\Details.cshtml" />
+    <Content Include="Views\subcatrogoris\Edit.cshtml" />
+    <Content Include="Views\subcatrogoris\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
